@@ -6,9 +6,37 @@ const loadLessons = () => {
 
 const loadLevelWord = (id) => {
     const url = `https://openapi.programming-hero.com/api/level/${id}`
+
     fetch(url)
         .then(res => res.json())
-        .then(data => displayLevelWords(data.data))
+        .then(data => {
+            const lessonButton = document.getElementById(`lesson-btn-${id}`)
+            removeActive() // remove active class
+            lessonButton.classList.add('active') // add active class
+            displayLevelWords(data.data)
+        })
+}
+const removeActive = () => {
+    const lessonButton = document.querySelectorAll(".active-lesson-btn")
+    lessonButton.forEach(btn => {
+        btn.classList.remove('active')
+    })
+}
+
+
+const loadWordDetail = async (id) => {
+    const url = `https://openapi.programming-hero.com/api/word/${id}`
+    const res = await fetch(url);
+    const details = await res.json();
+    displayWordDetails(details.data)
+
+}
+
+const displayWordDetails = (word) => {
+
+    const detailsContainer = document.getElementById('details-container')
+    my_modal_5.showModal()
+
 }
 
 const displayLevelWords = (words) => {
@@ -28,13 +56,13 @@ const displayLevelWords = (words) => {
         const card = document.createElement('div')
         card.innerHTML = `
             <div class="bg-white rounded-xl shadow-sm text-center space-y-4 py-10 px-5 h-full">
-                <h2 class="font-bold text-2xl">${words.word}</h2>
+                <h2 class="font-bold text-2xl">${words.word ? words.word : "শব্দ পাওয়া যায়নি"}</h2>
                 <p class="font-semibold">Meaning /Pronunciation</p>
                 <div>
-                    <p class="font-bold text-2xl text-[#18181bd3]">"${words.meaning} /${words.pronunciation} "</p>
+                    <p class="font-bold text-2xl text-[#18181bd3]">"${words.meaning ? words.meaning : "অর্থ পাওয়া যায়নি"} /${words.pronunciation ? words.pronunciation : "pronunciation পাওয়া যায়নি"} "</p>
                 </div>
                 <div class="flex justify-between">
-                    <button class="btn text-[#18181bd3] bg-[#1A91FF10] hover:bg-[#1A91FF80]">
+                    <button onclick="loadWordDetail(${words.id})" class="btn text-[#18181bd3] bg-[#1A91FF10] hover:bg-[#1A91FF80]">
                         <i class="fa-solid fa-circle-info"></i>
                     </button>
                     <button class="btn text-[#18181bd3] bg-[#1A91FF10] hover:bg-[#1A91FF80]">
@@ -55,8 +83,8 @@ const displayLessons = (lessons) => {
     lessons.forEach(lessons => {
         const btnDiv = document.createElement('div')
         btnDiv.innerHTML = `
-        <button onclick="loadLevelWord(${lessons.level_no})"
-         class="btn btn-outline btn-primary">
+        <button id="lesson-btn-${lessons.level_no}" onclick="loadLevelWord(${lessons.level_no})"
+         class="btn btn-outline btn-primary active-lesson-btn">
          <span><i class="fa-solid fa-book-open"></i></span>
          Lessons - ${lessons.level_no}
         </button>`
