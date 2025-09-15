@@ -1,3 +1,10 @@
+const createElements = (arr) => {
+    const htmlElements = arr.map(el => `<span class="btn bg-[#EDF7FF] border-1 border-[#D7E4EF] rounded-md"> ${el}</span>`)
+    return (htmlElements.join(" "))
+
+}
+
+
 const loadLessons = () => {
     fetch('https://openapi.programming-hero.com/api/levels/all')
         .then(res => res.json())
@@ -23,7 +30,21 @@ const removeActive = () => {
     })
 }
 
-
+// "data": {
+// "word": "Tedious",
+// "meaning": "বিরক্তিকর / ক্লান্তিকর",
+// "pronunciation": "টিডিয়াস",
+// "level": 3,
+// "sentence": "The long speech was tedious to listen to.",
+// "points": 3,
+// "partsOfSpeech": "adjective",
+// "synonyms": [
+// "boring",
+// "monotonous",
+// "tiresome"
+// ],
+// "id": 70
+// }
 const loadWordDetail = async (id) => {
     const url = `https://openapi.programming-hero.com/api/word/${id}`
     const res = await fetch(url);
@@ -35,6 +56,29 @@ const loadWordDetail = async (id) => {
 const displayWordDetails = (word) => {
 
     const detailsContainer = document.getElementById('details-container')
+    detailsContainer.innerHTML = `
+     <div>
+                        <h2 class="text-2xl font-bold">${word.word}(<i class="fa-solid fa-microphone-lines"></i> : ${word.pronunciation})</h2>
+                    </div>
+                    <div>
+                        <p class="font-bold">Meaning</p>
+                        <p class="font-medium font-bangla">${word.meaning}</p>
+                    </div>
+                    <div>
+                        <p class="font-bold">Example</p>
+                        <p class="font-medium ">${word.sentence}</p>
+                    </div>
+                    <div>
+                        <p class="font-bold font-bangla">সমার্থক শব্দ গুলো</p>
+                        <div> ${createElements(word.synonyms)}</div>
+                    </div>
+                    <div class="modal-action">
+                        <form method="dialog">
+                            <!-- if there is a button in form, it will close the modal -->
+                            <button class="btn">Close</button>
+                        </form>
+    
+    `
     my_modal_5.showModal()
 
 }
