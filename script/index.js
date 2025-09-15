@@ -14,10 +14,34 @@ const loadLevelWord = (id) => {
 const displayLevelWords = (words) => {
     const wordContainer = document.getElementById('word-container')
     wordContainer.innerHTML = ''
+    if (words.length == 0) {
+        wordContainer.innerHTML = `
+       <div class="text-center col-span-full rounded-xl py-10 
+            space-y-6 font-bangla">
+            <img class="mx-auto" src="./assets/alert-error.png">
+                <p class="text-xl font-medium text-gray-500">এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।</p>
+                <h2 class="font-bold text-4xl">নেক্সট Lesson এ যান</h2>
+            </div>`
+        return;
+    }
     words.forEach(words => {
         const card = document.createElement('div')
         card.innerHTML = `
-        <p>Cat</p>
+            <div class="bg-white rounded-xl shadow-sm text-center space-y-4 py-10 px-5 h-full">
+                <h2 class="font-bold text-2xl">${words.word}</h2>
+                <p class="font-semibold">Meaning /Pronunciation</p>
+                <div>
+                    <p class="font-bold text-2xl text-[#18181bd3]">"${words.meaning} /${words.pronunciation} "</p>
+                </div>
+                <div class="flex justify-between">
+                    <button class="btn text-[#18181bd3] bg-[#1A91FF10] hover:bg-[#1A91FF80]">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </button>
+                    <button class="btn text-[#18181bd3] bg-[#1A91FF10] hover:bg-[#1A91FF80]">
+                        <i class="fa-solid fa-volume-high"></i>
+                    </button>
+                </div>
+            </div>
         `
         wordContainer.append(card)
     })
