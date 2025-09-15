@@ -4,6 +4,16 @@ const createElements = (arr) => {
 
 }
 
+const manageSpinner = (status) => {
+    if (status == true) {
+        document.getElementById('spinner').classList.remove('hidden')
+        document.getElementById('word-container').classList.add('hidden')
+    } else {
+        document.getElementById('word-container').classList.remove('hidden')
+        document.getElementById('spinner').classList.add('hidden')
+    }
+}
+
 
 const loadLessons = () => {
     fetch('https://openapi.programming-hero.com/api/levels/all')
@@ -12,6 +22,7 @@ const loadLessons = () => {
 }
 
 const loadLevelWord = (id) => {
+    manageSpinner(true)
     const url = `https://openapi.programming-hero.com/api/level/${id}`
 
     fetch(url)
@@ -30,21 +41,7 @@ const removeActive = () => {
     })
 }
 
-// "data": {
-// "word": "Tedious",
-// "meaning": "বিরক্তিকর / ক্লান্তিকর",
-// "pronunciation": "টিডিয়াস",
-// "level": 3,
-// "sentence": "The long speech was tedious to listen to.",
-// "points": 3,
-// "partsOfSpeech": "adjective",
-// "synonyms": [
-// "boring",
-// "monotonous",
-// "tiresome"
-// ],
-// "id": 70
-// }
+
 const loadWordDetail = async (id) => {
     const url = `https://openapi.programming-hero.com/api/word/${id}`
     const res = await fetch(url);
@@ -94,6 +91,7 @@ const displayLevelWords = (words) => {
                 <p class="text-xl font-medium text-gray-500">এই Lesson এ এখনো কোন Vocabulary যুক্ত করা হয়নি।</p>
                 <h2 class="font-bold text-4xl">নেক্সট Lesson এ যান</h2>
             </div>`
+        manageSpinner(false)
         return;
     }
     words.forEach(words => {
@@ -117,6 +115,7 @@ const displayLevelWords = (words) => {
         `
         wordContainer.append(card)
     })
+    manageSpinner(false)
 }
 
 
