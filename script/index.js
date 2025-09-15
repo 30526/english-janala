@@ -73,7 +73,7 @@ const displayWordDetails = (word) => {
                     </div>
                     <div>
                         <p class="font-bold font-bangla">সমার্থক শব্দ গুলো</p>
-                        <div> ${createElements(word.synonyms)}</div>
+                        <div class="gap-y-2"> ${createElements(word.synonyms)}</div>
                     </div>
                     <div class="modal-action">
                         <form method="dialog">
